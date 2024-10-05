@@ -1,4 +1,7 @@
 ---
+import { Toaster } from '../components/ui/toaster';
+import { ThemeToggle } from '../components/ThemeToggle';
+
 interface Props {
 	title: string;
 }
@@ -6,7 +9,7 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -17,34 +20,38 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<div id="theme-root">
+			<header class="bg-blue-950 dark:bg-blue-900 text-white p-4 flex justify-between items-center">
+				<h1 class="text-2xl font-bold">{title}</h1>
+				<ThemeToggle client:load />
+			</header>
+			<main class="flex-grow bg-blue-100 dark:bg-blue-950 min-h-screen">
+				<slot />
+			</main>
+			<Toaster client:load />
+		</div>
+
+		<script>
+			function setTheme(theme) {
+				localStorage.setItem('theme', theme);
+				document.documentElement.classList.toggle('dark', theme === 'dark');
+			}
+
+			function getInitialTheme() {
+				const savedTheme = localStorage.getItem('theme');
+				return savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+			}
+
+			document.addEventListener('DOMContentLoaded', () => {
+				const initialTheme = getInitialTheme();
+				setTheme(initialTheme);
+
+				window.toggleTheme = () => {
+					const currentTheme = localStorage.getItem('theme') || 'light';
+					const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+					setTheme(newTheme);
+				};
+			});
+		</script>
 	</body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>
