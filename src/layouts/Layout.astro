@@ -19,39 +19,37 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
-		<div id="theme-root">
-			<header class="bg-blue-950 dark:bg-blue-900 text-white p-4 flex justify-between items-center">
-				<h1 class="text-2xl font-bold">{title}</h1>
-				<ThemeToggle client:load />
-			</header>
-			<main class="flex-grow bg-blue-100 dark:bg-blue-950 min-h-screen">
-				<slot />
-			</main>
-			<Toaster client:load />
-		</div>
-
-		<script>
-			function setTheme(theme) {
-				localStorage.setItem('theme', theme);
-				document.documentElement.classList.toggle('dark', theme === 'dark');
-			}
-
-			function getInitialTheme() {
-				const savedTheme = localStorage.getItem('theme');
-				return savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-			}
-
-			document.addEventListener('DOMContentLoaded', () => {
-				const initialTheme = getInitialTheme();
-				setTheme(initialTheme);
-
-				window.toggleTheme = () => {
-					const currentTheme = localStorage.getItem('theme') || 'light';
-					const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-					setTheme(newTheme);
-				};
-			});
-		</script>
+	<body id="theme-root" class="flex flex-col">
+        <header class="bg-blue-950 text-white p-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">{title}</h1>
+            <ThemeToggle client:load />
+        </header>
+        <main class="flex-grow bg-blue-100 dark:bg-blue-950 content-center">
+            <slot />
+        </main>
+        <Toaster client:load />
 	</body>
 </html>
+
+<script>
+    function setTheme(theme) {
+        localStorage.setItem('theme', theme);
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    function getInitialTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        return savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const initialTheme = getInitialTheme();
+        setTheme(initialTheme);
+
+        window.toggleTheme = () => {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        };
+    });
+</script>

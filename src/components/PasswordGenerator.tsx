@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Slider } from "./ui/slider";
+import { BackgroundGradient } from "./BackgroundGradient";
 import { useToast } from "../hooks/use-toast";
 import clipboardCopy from "clipboard-copy";
 
@@ -59,87 +60,91 @@ const PasswordGenerator: React.FC = () => {
     };
 
     return (
-        <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-24 min-w-96">
-            <div className="flex flex-col gap-4 items-center space-x-2">
-                <label
-                    htmlFor="length"
-                    className="text-gray-700 dark:text-gray-300">
-                    Password Length: {length}
-                </label>
-                <Slider
-                    id="length"
-                    min={4}
-                    max={32}
-                    step={1}
-                    value={[length]}
-                    onValueChange={(value) => setLength(value[0])}
-                    className="w-64"
-                />
-            </div>
-            <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                    <Checkbox
-                        id="uppercase"
-                        checked={includeUppercase}
-                        onCheckedChange={(checked) =>
-                            setIncludeUppercase(checked as boolean)
-                        }
-                    />
+        <BackgroundGradient>
+            <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded-[22px] shadow-md">
+                <h1 className="text-3xl font-bold text-center">
+                    Password Generator
+                </h1>
+                <div className="flex flex-col gap-4 items-center space-x-2">
                     <label
-                        htmlFor="uppercase"
-                        className="text-gray-700 dark:text-gray-300">
-                        Include Uppercase Letters
+                        htmlFor="length"
+                        className="text-gray-700 dark:text-gray-300 text-lg">
+                        Password Length: {length}
                     </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox
-                        id="lowercase"
-                        checked={includeLowercase}
-                        onCheckedChange={(checked) =>
-                            setIncludeLowercase(checked as boolean)
-                        }
+                    <Slider
+                        id="length"
+                        min={4}
+                        max={32}
+                        step={1}
+                        value={[length]}
+                        onValueChange={(value) => setLength(value[0])}
+                        className="w-64"
                     />
-                    <label
-                        htmlFor="lowercase"
-                        className="text-gray-700 dark:text-gray-300">
-                        Include Lowercase Letters
-                    </label>
                 </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox
-                        id="numbers"
-                        checked={includeNumbers}
-                        onCheckedChange={(checked) =>
-                            setIncludeNumbers(checked as boolean)
-                        }
-                    />
-                    <label
-                        htmlFor="numbers"
-                        className="text-gray-700 dark:text-gray-300">
-                        Include Numbers
-                    </label>
+                <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="uppercase"
+                            checked={includeUppercase}
+                            onCheckedChange={(checked) =>
+                                setIncludeUppercase(checked as boolean)
+                            }
+                        />
+                        <label
+                            htmlFor="uppercase"
+                            className="text-gray-700 dark:text-gray-300">
+                            Include Uppercase Letters
+                        </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="lowercase"
+                            checked={includeLowercase}
+                            onCheckedChange={(checked) =>
+                                setIncludeLowercase(checked as boolean)
+                            }
+                        />
+                        <label
+                            htmlFor="lowercase"
+                            className="text-gray-700 dark:text-gray-300">
+                            Include Lowercase Letters
+                        </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="numbers"
+                            checked={includeNumbers}
+                            onCheckedChange={(checked) =>
+                                setIncludeNumbers(checked as boolean)
+                            }
+                        />
+                        <label
+                            htmlFor="numbers"
+                            className="text-gray-700 dark:text-gray-300">
+                            Include Numbers
+                        </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="symbols"
+                            checked={includeSymbols}
+                            onCheckedChange={(checked) =>
+                                setIncludeSymbols(checked as boolean)
+                            }
+                        />
+                        <label
+                            htmlFor="symbols"
+                            className="text-gray-700 dark:text-gray-300">
+                            Include Symbols
+                        </label>
+                    </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox
-                        id="symbols"
-                        checked={includeSymbols}
-                        onCheckedChange={(checked) =>
-                            setIncludeSymbols(checked as boolean)
-                        }
-                    />
-                    <label
-                        htmlFor="symbols"
-                        className="text-gray-700 dark:text-gray-300">
-                        Include Symbols
-                    </label>
-                </div>
-            </div>
-            <Button
-                onClick={generatePassword}
-                className="bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
-                Generate Password
-            </Button>
-            {password && (
+                <Button
+                    onClick={generatePassword}
+                    className="bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 w-full">
+                    Generate Password
+                </Button>
+
                 <div className="mt-4">
                     <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                         Generated Password:
@@ -158,8 +163,8 @@ const PasswordGenerator: React.FC = () => {
                         </Button>
                     </div>
                 </div>
-            )}
-        </div>
+            </div>
+        </BackgroundGradient>
     );
 };
 
